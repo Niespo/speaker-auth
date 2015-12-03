@@ -1,0 +1,12 @@
+# Packages #
+*.jar
+*.war
+*.ear
+.idea
+.mvn
+audio
+target
+*.iml
+
+
+
