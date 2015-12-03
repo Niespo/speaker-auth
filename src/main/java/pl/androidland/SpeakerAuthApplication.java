@@ -37,12 +37,14 @@ public class SpeakerAuthApplication implements CommandLineRunner {
         repository.deleteAll();
         addUser("Marcin");
         addUser("Aneta");
+        System.out.println(System.getProperty("user.dir"));
         Collection<Speaker> speakers = speakersService.getAllUsers();
         System.out.println(speakers.size());
 
         for (Speaker speaker : speakers)
-            for (String voicePath : speaker.getVoiceFilesPaths())
-                recognitionService.addVoice(speaker.getName(), new File(voicePath));
+                speaker.getVoiceFilesPaths()
+                        .stream()
+                        .forEach((voicePath) -> recognitionService.addVoice(speaker.getName(),voicePath));
 
     }
 

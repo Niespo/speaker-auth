@@ -10,9 +10,10 @@ import java.io.IOException;
 
 @Immutable
 public class VoiceUploader {
-
-    private static final String AUDIO_DIRECTORY = "D:\\IdeaProjects\\SpeakerAuthService\\audio\\";
-    public static final String DIRECTORY_SEPARATOR = "\\";
+    private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
+    private static final String AUDIO_DIRECTORY = "audio";
+    private static final String DIRECTORY_SEPARATOR = "\\";
+    private static final String TARGET_DIRECTORY = CURRENT_DIRECTORY + DIRECTORY_SEPARATOR + AUDIO_DIRECTORY + DIRECTORY_SEPARATOR;
     public static final String NO_VOICE_ID_PREFIX = "identity";
 
     private String filePath;
@@ -27,7 +28,7 @@ public class VoiceUploader {
     }
 
     private String writeFile(String userId, MultipartFile file) {
-        String pathname = AUDIO_DIRECTORY + userId + DIRECTORY_SEPARATOR + file.getOriginalFilename();
+        String pathname = TARGET_DIRECTORY + userId + DIRECTORY_SEPARATOR + file.getOriginalFilename();
         if (file.isEmpty())
             return pathname;
         BufferedOutputStream stream = null;

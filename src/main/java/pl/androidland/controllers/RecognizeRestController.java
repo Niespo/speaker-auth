@@ -32,7 +32,7 @@ public class RecognizeRestController {
             @RequestParam("voice") MultipartFile file)
             throws IOException, UnsupportedAudioFileException {
 
-        VoiceUploader uploader = new VoiceUploader((file));
+        VoiceUploader uploader = new VoiceUploader(file);
         if (!uploader.isUploaded())
             return ResponseMessageFactory.getFailUploadResponse();
 

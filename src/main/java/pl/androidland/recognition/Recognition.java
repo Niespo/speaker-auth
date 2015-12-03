@@ -10,5 +10,5 @@ import java.util.List;
 public interface Recognition<T> {
     List<MatchResult<T>> recognize(File file) throws IOException, UnsupportedAudioFileException;
 
-    void addVoice(T user, File voice) throws IOException, UnsupportedAudioFileException;
+    void addVoice(T user, String voicePath) throws IOException, UnsupportedAudioFileException;
 }

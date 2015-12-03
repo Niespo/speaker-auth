@@ -26,13 +26,13 @@ public class RecognitionService implements Recognition<String> {
     }
 
     @Override
-    public void addVoice(String userName, File voice) throws UnsupportedAudioFileException {
+    public void addVoice(String userName, String voicePath) {
         try {
             if (!usersNames.contains(userName)) {
                 usersNames.add(userName);
-                recognito.createVoicePrint(userName, voice);
+                recognito.createVoicePrint(userName, new File(voicePath));
             } else {
-                recognito.mergeVoiceSample(userName, voice);
+                recognito.mergeVoiceSample(userName, new File(voicePath));
             }
         } catch (Exception e) {
             LOG.error("Exception: " + e.getMessage());
