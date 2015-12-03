@@ -14,10 +14,14 @@ public class SpeakersService {
     @Autowired
     SpeakersRepository repository;
 
-    public Speaker addSpeaker(Speaker speaker) {
+    public void addSpeaker(Speaker speaker) {
         repository.save(speaker);
         LOG.info("Speaker: " + speaker.getName() + " has been added to db.");
-        return speaker;
+    }
+
+    public void updateSpeaker(Speaker speaker) {
+        repository.save(speaker);
+        LOG.info("Speaker: " + speaker.getName() + " has been added to db. || ID: " + speaker.getId());
     }
 
     public Speaker getSpeakerByName(String name) {

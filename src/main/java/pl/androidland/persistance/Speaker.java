@@ -4,8 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = "users")
 public class Speaker {
@@ -19,7 +19,7 @@ public class Speaker {
 
     private Date registerDate;
 
-    private Collection<String> voiceFilesPaths = new ArrayList<>();
+    private List<String> voiceFilesPaths = new ArrayList<>();
 
     public Speaker(String name, char[] password) {
         voiceFilesPaths = new ArrayList<>();
@@ -28,7 +28,7 @@ public class Speaker {
         this.password = password;
     }
 
-    public Collection<String> getVoiceFilesPaths() {
+    public List<String> getVoiceFilesPaths() {
         return voiceFilesPaths;
     }
 
@@ -39,6 +39,10 @@ public class Speaker {
     public Speaker addVoicePath(String voicePath) {
         voiceFilesPaths.add(voicePath);
         return this;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public Date getRegisterDate() {

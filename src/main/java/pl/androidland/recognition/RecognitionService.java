@@ -22,8 +22,7 @@ public class RecognitionService implements Recognition<String> {
 
     @Override
     public List<MatchResult<String>> recognize(File file) throws IOException, UnsupportedAudioFileException {
-        List<MatchResult<String>> matches = recognito.identify(file);
-        return matches;
+        return recognito.identify(file);
     }
 
     @Override

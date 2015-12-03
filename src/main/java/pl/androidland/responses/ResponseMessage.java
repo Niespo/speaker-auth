@@ -1,13 +1,13 @@
 package pl.androidland.responses;
 
 
-public class RegisterResponse<T> implements Response {
+public class ResponseMessage<T> implements Response {
 
     private final ResponseType type;
     private final String message;
     private final T content;
 
-    private RegisterResponse(Builder<T> builder) {
+    private ResponseMessage(Builder<T> builder) {
         this.type = builder.type;
         this.message = builder.message;
         this.content = builder.content;
@@ -51,8 +51,8 @@ public class RegisterResponse<T> implements Response {
             return this;
         }
 
-        public RegisterResponse<S> build() {
-            return new RegisterResponse<>(this);
+        public ResponseMessage<S> build() {
+            return new ResponseMessage<>(this);
         }
     }
 

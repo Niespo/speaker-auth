@@ -1,34 +1,38 @@
 package pl.androidland.responses;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 public class SpeakerInfo {
 
     private final String name;
-    private final int likehoodRatio;
-    private final double distance;
+    private final Collection<String> voiceFilesPaths;
+    private final Date date;
 
     private SpeakerInfo(Builder builder) {
         this.name = builder.name;
-        this.likehoodRatio = builder.likehoodRatio;
-        this.distance = builder.distance;
-    }
-
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public int getLikehoodRatio() {
-        return likehoodRatio;
+        this.voiceFilesPaths = builder.voiceFilesPaths;
+        this.date = builder.date;
     }
 
     public String getName() {
         return name;
     }
 
+    public Collection<String> getVoiceFilesPaths() {
+        return voiceFilesPaths;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
     public static class Builder {
         private String name;
-        private int likehoodRatio;
-        private double distance;
+        private List<String> voiceFilesPaths;
+        private Date date;
 
         public static Builder newInfo() {
             return new Builder();
@@ -42,13 +46,13 @@ public class SpeakerInfo {
             return this;
         }
 
-        public Builder withLikehoodRatio(int likehoodRatio) {
-            this.likehoodRatio = likehoodRatio;
+        public Builder withVoiceFilesPaths(List<String> voiceFilesPaths) {
+            this.voiceFilesPaths = new ArrayList<>(voiceFilesPaths);
             return this;
         }
 
-        public Builder withDistance(double distance) {
-            this.distance = distance;
+        public Builder withDate(Date date) {
+            this.date = date;
             return this;
         }
 

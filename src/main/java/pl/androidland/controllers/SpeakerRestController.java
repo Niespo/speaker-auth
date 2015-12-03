@@ -9,15 +9,14 @@ import pl.androidland.io.VoiceUploader;
 import pl.androidland.persistance.Speaker;
 import pl.androidland.persistance.SpeakersService;
 import pl.androidland.recognition.Recognition;
-import pl.androidland.responses.RegisterResponse;
-import pl.androidland.responses.Response;
-import pl.androidland.responses.ResponseType;
+import pl.androidland.responses.*;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.util.Arrays;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/speaker")
 public class SpeakerRestController {
 
     @Autowired
@@ -29,23 +28,40 @@ public class SpeakerRestController {
     @RequestMapping(value = "/addVoice", method = RequestMethod.POST)
     public
     @ResponseBody
-    String addVoice(
+    ResponseEntity<Response> addVoice(
             @RequestParam("name") String name,
             @RequestParam("password") String password,
             @RequestParam("voice") MultipartFile file)
             throws IOException, UnsupportedAudioFileException {
 
 
+        if(!speakersService.isUserAdded(name))
+            return ResponseMessageFactory.getNotSpeakerFoundResponse(name);
+
+        Speaker speaker = speakersService.getSpeakerByName(name);
+
+        if(!Arrays.equals(speaker.getPassword(),password.toCharArray()))
+            return ResponseMessageFactory.getIncorrectPasswordResponse(name);
+
         VoiceUploader uploader = new VoiceUploader(name, file);
+
+        if (!uploader.isUploaded())
+            return ResponseMessageFactory.getFailUploadResponse();
+
         String pathname = uploader.getFilePath();
 
-        Speaker speaker = speakersService.isUserAdded(name) ? speakersService.getSpeakerByName(name) : speakersService.addSpeaker(new Speaker(name, password.toCharArray()));
         speaker.addVoicePath(pathname);
+        speakersService.updateSpeaker(speaker);
 
-        return "You successfully uploaded " + pathname + "!";
+        SpeakerInfo speakerInfo = SpeakerInfo.Builder
+                .newInfo()
+                .withName(speaker.getName())
+                .withDate(speaker.getRegisterDate())
+                .withVoiceFilesPaths(speaker.getVoiceFilesPaths())
+                .build();
+
+        return ResponseMessageFactory.getVoiceAddedResponse(speakerInfo);
     }
-
-
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public
@@ -55,13 +71,13 @@ public class SpeakerRestController {
         Speaker speaker = speakersService.getSpeakerByName(name);
 
         if (speaker == null)
-            return new ResponseEntity<>(RegisterResponse.Builder.
+            return new ResponseEntity<>(ResponseMessage.Builder.
                     newResponse(ResponseType.FAIL)
                     .withMessage(String.format("There is no speaker with name %s", name))
                     .withContent(name)
                     .build(), HttpStatus.OK);
 
-        return new ResponseEntity<>(RegisterResponse.Builder.
+        return new ResponseEntity<>(ResponseMessage.Builder.
                 newResponse(ResponseType.SUCCESSFUL)
                 .withMessage(String.format("Speaker with name %s has found", name))
                 .withContent(speaker)
